@@ -36,3 +36,7 @@
 ../admin.html
 ../carlostexto/
 ../servidor.txt
+
+# Eliminar exclusión de las carpetas fotos y musica
+!fotos/
+!musica/
