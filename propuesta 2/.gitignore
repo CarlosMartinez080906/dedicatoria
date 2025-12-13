@@ -1,0 +1,38 @@
+# Ignorar archivos y carpetas innecesarios
+*.docx
+*.pdf
+*.odt
+*.xlsx
+*.zip
+*.lnk
+*.url
+*.ini
+*.txt
+*.png
+*.webp
+*.jpg
+*.jpeg
+*.mp3
+*.mp4
+*.avi
+*.mkv
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+
+# Ignorar carpetas específicas
+../14MAYO ACT/
+../4to semestre/
+../50 wallpapers/
+../Galeria/
+../Nueva carpeta (2)/
+../Universidad/
+../dia de madres/
+../fotos recuperadas/
+../musica/
+../RentaInternet/
+../admin.css
+../admin.html
+../carlostexto/
+../servidor.txt

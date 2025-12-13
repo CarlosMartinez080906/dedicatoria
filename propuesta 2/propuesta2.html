@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para ti 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .pantalla {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  /* CARGA */
+  #carga {
+    background-image: linear-gradient(#DC143C, #F08080);
+    color: white;
+    display: flex;
+  }
+
+  #foto {
+    width: 260px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 5s ease, transform 5s ease;
+  }
+
+  #foto.mostrar {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  #frase {
+    font-size: 21px;
+    opacity: 0;
+    transition: opacity 5s ease;
+    padding: 0 25px;
+    max-width: 650px;
+    line-height: 1.7;
+  }
+
+  #frase.mostrar {
+    opacity: 1;
+  }
+
+  #barra {
+    width: 80%;
+    height: 14px;
+    background: #444;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 30px;
+  }
+
+  #progreso {
+    height: 100%;
+    width: 0%;
+    background: #ff6fa5;
+    transition: width 5s linear;
+  }
+
+  /* PREGUNTA */
+  #pregunta {
+    background: #ffe6f0;
+    color: #ff3366;
+    animation: fadeIn 5s ease;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 16px 36px;
+    margin: 18px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* Añadimos un diseño más romántico y animado al botón de "Sí" */
+  button.si {
+    background: linear-gradient(45deg, #ff6fa5, #ff3366);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button.si:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.7);
+  }
+
+  button.si:active {
+    transform: scale(0.95);
+  }
+
+  .no {
+    background: #ccc;
+  }
+
+  /* FINAL */
+  #final {
+    background: linear-gradient(#ffb6c1, #ffe6f0);
+    color: #ff3366;
+    padding: 50px 25px;
+    animation: fadeIn 5s ease;
+  }
+
+  #mensaje {
+    font-size: 21px;
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  .corazon {
+    position: absolute;
+    bottom: -20px;
+    animation: flotar 10s linear infinite;
+  }
+
+  @keyframes flotar {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-130vh); opacity: 0; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Ajustar corazones para que se vean en toda la página */
+  .heart {
+    position: fixed; /* Cambiar a fixed para que se vean en toda la página */
+    animation: floatHearts 5s linear infinite;
+    color: #ff6fa5;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 1000; /* Asegurar que estén encima de otros elementos */
+  }
+
+  @keyframes floatHearts {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100vh);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="musica" src="musica/Que Bonito Es Querer - (Lyric Video) - Letras -  Ulices Chaidez y Sus Plebes - DEL Records 2018.mp3" loop></audio>
+
+<!-- CARGA -->
+<div id="carga" class="pantalla">
+  <img id="foto" src="foto1.jpg">
+  <div id="frase">Cargando recuerdos que guardo con cariño…</div>
+  <div id="barra"><div id="progreso"></div></div>
+</div>
+
+<!-- PREGUNTA -->
+<div id="pregunta" class="pantalla">
+  <h1 id="titulo"></h1>
+  <p style="font-size:18px; max-width:650px;">
+    Me tomé el tiempo para hacer esto porque tú lo vales…
+  </p>
+  <h2>¿Quieres ser mi novia? 💖</h2>
+  <button class="si" onclick="aceptar()">Sí 💘</button>
+  <button class="no" id="no">No 😳</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="pantalla">
+  <h1>💖 Gracias por decir que sí 💖</h1>
+  <div id="mensaje"></div>
+</div>
+
+<script>
+  const nombreElla = "Mia Yhoalibeth";
+  const nombreTuyo = "Mia Yhoalibeth";
+
+  const frases = [
+    "Desde el primer instante en que coincidimos, sentí que algo en mí se acomodaba, como si el destino hubiera decidido regalarme tu presencia.",
+    "Con el paso del tiempo entendí que no eras solo alguien especial, sino el lugar donde mi tranquilidad y mis sonrisas se sienten en casa.",
+    "Cada recuerdo contigo se queda guardado en mí como un refugio al que siempre quiero volver cuando pienso en lo bonito de la vida.",
+    "No sé qué nos depare el mañana, pero hoy tengo claro que quiero caminar este camino contigo, sin prisa, pero sin pausa."
+  ];
+
+  const mensajeFinal = `,
+
+  No prometo perfección, pero sí honestidad.
+  Prometo cuidarte, respetarte y elegirte incluso en los días difíciles.
+  Quiero compartir contigo mis sueños, mis silencios y mis alegrías.
+
+  Gracias por permitirme caminar a tu lado.
+  Con todo mi corazón,
+  ${nombreTuyo} ❤️
+  `;
+
+  document.getElementById("titulo").innerText =
+    `${nombreElla}, hay algo muy importante que quiero preguntarte 💖`;
+
+  document.getElementById("mensaje").innerText = mensajeFinal;
+
+  const fotos = ["fotos/foto1.jpg", "fotos/foto2.jpg", "fotos/foto3.jpg", "fotos/foto4.jpg", "fotos/foto5.jpg", "fotos/foto6.jpg", "fotos/foto7.jpg", "fotos/foto8.jpg", "fotos/foto9.jpg", "fotos/foto10.jpg"];
+  let i = 0;
+  let progreso = 0;
+
+  const foto = document.getElementById("foto");
+  const frase = document.getElementById("frase");
+  const barra = document.getElementById("progreso");
+
+  document.getElementById("carga").style.display = "flex";
+
+  function mostrarCarga() {
+    frase.classList.remove("mostrar");
+    foto.classList.remove("mostrar");
+
+    setTimeout(() => {
+      frase.innerText = frases[i % frases.length];
+      foto.src = fotos[i % fotos.length];
+      frase.classList.add("mostrar");
+      foto.classList.add("mostrar");
+
+      progreso += 25;
+      barra.style.width = progreso + "%";
+      i++;
+
+      // Crear corazones durante la transición
+      for (let j = 0; j < 10; j++) {
+        setTimeout(crearCorazonDuranteTransicion, j * 500);
+      }
+
+      if (progreso >= 100) {
+        setTimeout(() => cambiarPantalla("pregunta"), 5000);
+      }
+    }, 1000);
+  }
+
+  const intervalo = setInterval(() => {
+    if (progreso < 100) mostrarCarga();
+    else clearInterval(intervalo);
+  }, 5000);
+
+  function cambiarPantalla(id) {
+    document.querySelectorAll(".pantalla").forEach(p => p.style.display = "none");
+    document.getElementById(id).style.display = "flex";
+  }
+
+  function aceptar() {
+    cambiarPantalla("final");
+    document.getElementById("musica").play();
+    setInterval(crearCorazon, 700);
+  }
+
+  function crearCorazon() {
+    const c = document.createElement("div");
+    c.className = "corazon";
+    c.innerHTML = "💖";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.fontSize = Math.random() * 22 + 18 + "px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 10000);
+  }
+
+  function crearCorazonDuranteTransicion() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = Math.random() * 100 + "vh"; /* Posición aleatoria en toda la página */
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }
+
+  const noBtn = document.getElementById("no");
+  noBtn.addEventListener("mouseover", () => {
+    noBtn.style.left = Math.random() * 240 - 120 + "px";
+    noBtn.style.top = Math.random() * 240 - 120 + "px";
+  });
+
+  // Iniciar automáticamente la música y la animación al cargar la página
+  window.onload = function() {
+    document.getElementById("musica").play(); // Reproducir música automáticamente
+    mostrarCarga(); // Iniciar la transición de carga automáticamente
+  };
+</script>
+
+</body>
+</html>
